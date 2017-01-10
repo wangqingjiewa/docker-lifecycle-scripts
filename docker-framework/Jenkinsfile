@@ -3,7 +3,7 @@
 node {
 
    // Get some code from a GitHub repository
-   git url: 'https://github.com/jfrogtraining/docker-lifecycle-scripts'
+   git url: 'https://github.com/wangqingjiewa/docker-lifecycle-scripts'
   def artServer = Artifactory.server('jfrogtraining')
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'art-docker-ci',
   usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
@@ -11,7 +11,7 @@ node {
     def pw=env.PASSWORD
     artServer.username=uname
     artServer.password=pw
-    def curlstr="curl -u"+uname+':'+pw+" 'https://jfrogtraining.jfrog.io/jfrogtraining/"
+    def curlstr="curl -u"+uname+':'+pw+" 'https://beijing.jiewa.com/artifactory/"
     def artDocker= Artifactory.docker(uname, pw)
     def buildInfo = Artifactory.newBuildInfo()
     dir('docker-framework') {
@@ -67,7 +67,7 @@ node {
   }
 }
 node {
-  git url: 'https://github.com/jfrogtraining/docker-lifecycle-scripts'
+  git url: 'https://github.com/wangqingjiewa/docker-lifecycle-scripts'
   def artServer = Artifactory.server('jfrogtraining')
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'art-docker-ci',
   usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
@@ -75,7 +75,7 @@ node {
     def pw=env.PASSWORD
     artServer.username=uname
     artServer.password=pw
-    def curlstr="curl -u"+uname+':'+pw+" 'https://jfrogtraining.jfrog.io/jfrogtraining/"
+    def curlstr="curl -u"+uname+':'+pw+" 'https://beijing.jiewa.com/artifactory/"
     def artDocker= Artifactory.docker(uname, pw)
     dir('docker-framework/framework-test')
     {
@@ -95,7 +95,7 @@ node {
 }""" //"//DownloadSpec
         println(downloadSpecWar)
         artServer.download(downloadSpecWar)
-        def tagNameTest='gcartifactory-us.jfrog.info:5002/docker-framework-test:'+env.BUILD_NUMBER
+        def tagNameTest='beijing.jiewa.com:5002/docker-framework-test:'+env.BUILD_NUMBER
         docker.build(tagNameTest)
         docker.image(tagNameTest).withRun('-p 8181:8181') {c ->
           sleep 5
